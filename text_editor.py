@@ -15,10 +15,10 @@ class TextEditor:
         text_scrollbar = tk.Scrollbar(frame, orient="vertical")
         text_scrollbar.pack(side="right", fill="y")
 
-        self.row_numbers_widget = tk.Text(frame, width=3, bg='white', fg='black', padx=5, pady=10, font=('Arial', 12), wrap="none")
+        self.row_numbers_widget = tk.Text(frame, width=3, bg='white', fg='black', padx=5, pady=5, font=('Arial', 12), wrap="none")
         self.row_numbers_widget.pack(side="left", fill="y")
 
-        self.main_text_widget = tk.Text(frame, wrap='word', undo=True, bg='white', fg='black', insertbackground='black', padx=5, pady=10, font=('Arial', 12), yscrollcommand=text_scrollbar.set)
+        self.main_text_widget = tk.Text(frame, wrap='word', undo=True, bg='white', fg='black', insertbackground='black', padx=5, pady=5, font=('Arial', 12), yscrollcommand=text_scrollbar.set)
         self.main_text_widget.pack(expand="yes", fill="both", padx=(0, 5))
 
         text_scrollbar.config(command=self.main_text_widget.yview)
