@@ -123,7 +123,7 @@ class TextEditor:
         self.update_row_numbers()
 
     def open_file(self):
-        file_path = filedialog.askopenfilename(defaultextension=".txt", filetypes=[("Text files", "*.txt"), ("All files", "*.*")])
+        file_path = filedialog.askopenfilename(defaultextension=".txt", filetypes=[("Text files", "*.txt"), ("Html files", "*.html"), ("Python files", "*.py"), ("All files", "*.*")])
         if file_path:
             with open(file_path, "r") as file:
                 content = file.read()
@@ -140,7 +140,7 @@ class TextEditor:
                 file.write(content)
 
     def save_file_as(self):
-        file_path = filedialog.asksaveasfilename(defaultextension=".txt", filetypes=[("Text files", "*.txt"), ("All files", "*.*")])
+        file_path = filedialog.asksaveasfilename(defaultextension=".txt", filetypes=[("Text files", "*.txt"), ("Html files", "*.html"), ("Python files", "*.py"), ("All files", "*.*")])
         if file_path:
             self.file_path = file_path
             self.save_file()
