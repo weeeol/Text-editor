@@ -157,7 +157,7 @@ class TextEditor:
         self.update_row_numbers()
 
     def show_about_info(self):
-        tk.messagebox.showinfo("About", "Joel Editor\n\nCreated by Your Veol Steve")
+        tk.messagebox.showinfo("About", "Joel Editor\n\nCreated by Veol Steve")
 
     def toggle_bold(self):
         self.toggle_formatting("bold", self.bold_var)
