@@ -22,16 +22,19 @@ class TextEditor:
         text_scrollbar = tk.Scrollbar(frame, orient="vertical")
         text_scrollbar.pack(side="right", fill="y")
 
-        self.row_numbers_widget = tk.Text(frame, width=3, bg=self.light_bg, fg=self.light_fg, padx=5, pady=5, font=('Arial', 12), wrap="none")
+        self.row_numbers_widget = tk.Text(frame, width=3, bg=self.light_bg, fg=self.light_fg, padx=5, pady=5, font=('Arial', 13), wrap="none")
         self.row_numbers_widget.pack(side="left", fill="y")
+        self.row_numbers_widget.bind("<MouseWheel>", lambda event: "break")
+        self.row_numbers_widget.bind("<Button-1>", lambda event: "break")
+        self.row_numbers_widget.bind("<Key>", lambda event: "break")
 
-        self.main_text_widget = tk.Text(frame, wrap='word', undo=True, bg=self.light_bg, fg=self.light_fg, insertbackground=self.light_fg, padx=5, pady=5, font=('Arial', 12), yscrollcommand=text_scrollbar.set)
+        self.main_text_widget = tk.Text(frame, wrap='word', undo=True, bg=self.light_bg, fg=self.light_fg, insertbackground=self.light_fg, padx=5, pady=5, font=('Arial', 13), yscrollcommand=text_scrollbar.set)
         self.main_text_widget.pack(expand="yes", fill="both", padx=(0, 5))
 
         text_scrollbar.config(command=self.main_text_widget.yview)
 
         self.main_text_widget.config(yscrollcommand=self.scroll_text)
-        self.row_numbers_widget.config(state='disabled', bg=self.light_bg, fg=self.light_fg, font=('Arial', 12))
+        self.row_numbers_widget.config(state='disabled', bg=self.light_bg, fg=self.light_fg, font=('Arial', 13))
 
         self.menu_bar = tk.Menu(root)
         self.root.config(menu=self.menu_bar)
@@ -70,6 +73,7 @@ class TextEditor:
         self.font_menu.add_radiobutton(label="Arial", variable=self.font_var, value="Arial", command=self.change_font)
         self.font_menu.add_radiobutton(label="Courier New", variable=self.font_var, value="Courier New", command=self.change_font)
         self.font_menu.add_radiobutton(label="Times New Roman", variable=self.font_var, value="Times New Roman", command=self.change_font)
+        self.font_menu.add_radiobutton(label="Cascadia", variable=self.font_var, value="Cascadia", command=self.change_font)
 
         # Settings Menu
         self.settings_menu = tk.Menu(self.menu_bar, tearoff=0)
@@ -143,16 +147,26 @@ class TextEditor:
         self.update_id = self.root.after(100, self.update_row_numbers)
 
     def scroll_text(self, *args):
-        self.row_numbers_widget.yview_moveto(args[0])
-        self.main_text_widget.yview_moveto(args[0])
+            self.row_numbers_widget.yview_moveto(args[0])
+            self.main_text_widget.yview_moveto(args[0])
+            self.update_row_numbers()  
 
     def update_row_numbers(self):
-        lines = self.main_text_widget.get(1.0, tk.END).count('\n')
-        row_numbers_text = '\n'.join(str(i) for i in range(1, lines + 1))
-        self.row_numbers_widget.config(state='normal')
-        self.row_numbers_widget.delete(1.0, tk.END)
-        self.row_numbers_widget.insert(tk.END, row_numbers_text)
+        self.row_numbers_widget.config(state='normal')  
+        self.row_numbers_widget.delete(1.0, tk.END) 
+        line_count = self.main_text_widget.index('end-1c').split('.')[0]
+        row_numbers = "\n".join(str(i) for i in range(1, int(line_count)+1))
+        self.row_numbers_widget.insert(tk.END, row_numbers)
         self.row_numbers_widget.config(state='disabled')
+        self.row_numbers_widget.yview_moveto(self.main_text_widget.yview()[0])
+
+    def on_text_configure(self, event):
+        self.update_row_numbers()
+
+    def on_text_key(self, event):
+        if self.update_id:
+            self.root.after_cancel(self.update_id)
+        self.update_id = self.root.after(100, self.update_row_numbers)  # Delayed update to prevent multiple triggers
 
     def new_file(self):
         self.main_text_widget.delete(1.0, tk.END)
