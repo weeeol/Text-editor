@@ -1,3 +1,4 @@
+#I made this very simple text editor its still WORK IN PROGRESS
 import tkinter as tk
 from tkinter import ttk, filedialog, messagebox
 
@@ -73,8 +74,7 @@ class TextEditor:
         self.font_menu.add_radiobutton(label="Arial", variable=self.font_var, value="Arial", command=self.change_font)
         self.font_menu.add_radiobutton(label="Courier New", variable=self.font_var, value="Courier New", command=self.change_font)
         self.font_menu.add_radiobutton(label="Times New Roman", variable=self.font_var, value="Times New Roman", command=self.change_font)
-        self.font_menu.add_radiobutton(label="Cascadia", variable=self.font_var, value="Cascadia", command=self.change_font)
-
+        
         # Settings Menu
         self.settings_menu = tk.Menu(self.menu_bar, tearoff=0)
         self.menu_bar.add_cascade(label="Settings", menu=self.settings_menu)
@@ -175,7 +175,7 @@ class TextEditor:
         self.update_row_numbers()
 
     def open_file(self):
-        file_path = filedialog.askopenfilename(defaultextension=".txt", filetypes=[("Text files", "*.txt"), ("Python files", "*.py"), ("All files", "*.*")])
+        file_path = filedialog.askopenfilename(defaultextension=".txt", filetypes=[("Text files", "*.txt"), ("Html files", "*.html"), ("All files", "*.*")])
         if file_path:
             try:
                 with open(file_path, "r") as file:
