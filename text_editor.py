@@ -13,7 +13,6 @@ class TextEditor:
         self.light_fg = "black"
         self.dark_bg = "#2e2e2e"  
         self.dark_fg = "#f8f8f2"  
-
         style = ttk.Style()
         style.theme_use("clam")
 
